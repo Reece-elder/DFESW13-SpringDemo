@@ -12,6 +12,7 @@ public class HelloWorld {
 	// This method is considred a 'bean' and put into the beanbag for Spring to access
 	@Bean
 	public String returnHello() {
+		System.out.println("Hello World");
 		return "Hello World!";
 	}
 
