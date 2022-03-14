@@ -22,5 +22,16 @@ public class ControllerDemo {
 	public int returnNum() {
 		return 123;
 	}
+	
+	@GetMapping("/html") 
+		public String returnHTML() {
+			return "<h2> Will this work </h2>";
+		}
+	
+	@GetMapping("/image")
+	public String returnImg() {
+		return "<img src='https://m.media-amazon.com/images/I/81rnyexblLL._AC_UL1500_.jpg' alt = 'horrific lego man' width = 8000px>";
+	}
+	
 
 }
