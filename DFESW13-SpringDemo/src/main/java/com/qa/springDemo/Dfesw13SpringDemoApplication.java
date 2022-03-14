@@ -16,9 +16,18 @@ public class Dfesw13SpringDemoApplication {
 		
 		// Saving an object called byName that is equal to the bean of name "returnHello"
 		// Not saving a String (what the method returns) but saving the Bean object
-		Object byName = context.getBean("helloWorld");
+		Object byName = context.getBean("returnHello"); // bean of method name returnHello
+		// If grabbing bean by class name name use lowercase
+		Object byClass = context.getBean("helloWorld"); // bean of the method of class name HelloWorld
+		// if trying to create multiple instances of the same bean, Spring tells you off
+		
+		Object randomNum = context.getBean("randomNum");
+		
+		System.out.println(randomNum);
 		
 		System.out.println(byName);
+		
+		System.out.println(byClass);
 		
 	}
 
