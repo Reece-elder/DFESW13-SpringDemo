@@ -92,9 +92,44 @@ public class Controller {
 		 return true;
 	}
 	
+	@PostMapping("/postArray")
+	public boolean addArrayBookings(@RequestBody HolidayBooking[] bookingArray) {
+		
+		for(HolidayBooking booking : bookingArray) {
+			bookingList.add(booking);
+		}
+		return true;
+		
+	}
 	
-	
-	
-	
-
+	// Save the value of query and value as to seperate path variables
+	// update/country/wales - updates all bookings with country = wales to have a new value
+	@PutMapping("/updateByCountry/{value}")
+	public boolean updateAllObjects(@PathVariable("value") String value, @RequestBody HolidayBooking booking) {
+		
+		int i = 0;
+		
+		for(HolidayBooking bookingObj : bookingList) {
+			// if the value of getCountry() equal to the value we passed in..
+			if(bookingObj.getCountry() == value) {
+				System.out.println(i);
+				// if the bookingObj country == value
+				// set this index number to be the new values
+				bookingList.set(i, booking);
+				// Set this object to be equal to the new object passed in
+				// setCountry() whatever is passed in () is what you're setting the value to be
+				
+				// if bookingObj country == wales, set the price to be the new price
+				// set the weather to be the weather of the requestBody 
+//				bookingObj.setCountry(booking.getCountry());
+//				bookingObj.setAllInclusive(booking.isAllInclusive());
+//				bookingObj.setPrice(booking.getPrice());
+//				bookingObj.setWeather(booking.getWeather());
+			}
+			i++;
+		}
+		
+		return true;
+		
+	}
 }
