@@ -33,5 +33,10 @@ public class ControllerDemo {
 		return "<img src='https://m.media-amazon.com/images/I/81rnyexblLL._AC_UL1500_.jpg' alt = 'horrific lego man' width = 8000px>";
 	}
 	
+	@GetMapping("/js")
+	public String returnJS() {
+		return "<script> alert('Hello') </script>";
+	}
+	
 
 }
