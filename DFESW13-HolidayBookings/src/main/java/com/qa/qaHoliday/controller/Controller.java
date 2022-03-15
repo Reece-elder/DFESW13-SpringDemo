@@ -2,8 +2,11 @@ package com.qa.qaHoliday.controller;
 
 import java.util.ArrayList;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,9 +47,52 @@ public class Controller {
 	@PostMapping("/createBooking")
 	public boolean createBooking(@RequestBody HolidayBooking booking) {
 		System.out.println(booking);
+		
+		// bookinglist.size = Length of the array
+		booking.setId(bookingList.size() + 1);
 		bookingList.add(booking);
 		return true;
 	}
+	
+	// Get All 			x
+	// Post Data 		x
+	// Get by index		x
+	// Delete by index	x
+	// Delete all
+	// Update by index
+	
+	// Listens for a /get/<some number>
+	// /get/7 OR /get/145 - Path variable
+	@GetMapping("/get/{index}")
+	// Whatever the name of your path variable is, tell Spring to look for it
+	public HolidayBooking getByIndex(@PathVariable("index") int index) {
+		return bookingList.get(index);
+	}
+	
+	// Listens for /delete/<some number> and deletes the object of that index
+	@DeleteMapping("/delete/{index}")
+	public boolean deleteByIndex(@PathVariable("index") int index) {
+		bookingList.remove(index);
+		return true;
+	}
+	
+	// Listens for /deleteAll and clears all data from the arrayList
+	@DeleteMapping("/deleteAll")
+	public boolean deleteAll() {
+		bookingList.clear();
+		return true;
+	}
+	
+	// Update two paramaters, Id/index AND the data we're replacing with
+	// localhost:8080/update/2 AND we need to add a request body 
+	@PutMapping("/update/{index}")
+	public boolean update(@PathVariable("index") int index, @RequestBody HolidayBooking booking) {
+		 bookingList.set(index, booking);
+		 System.out.println("Object of index " + index + " updated.");
+		 return true;
+	}
+	
+	
 	
 	
 	
