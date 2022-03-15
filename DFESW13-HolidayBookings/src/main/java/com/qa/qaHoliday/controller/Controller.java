@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.qa.qaHoliday.model.HolidayBooking;
 
 // Telling Spring this class is a controller, meaning it takes in HTTP Requests
-@RestController
+//@RestController
 public class Controller {
 	
 	// Because this is powered by Java 11, no need to add the data type to the 2nd pointy brackets
@@ -132,4 +132,6 @@ public class Controller {
 		return true;
 		
 	}
+	
+	// 
 }
