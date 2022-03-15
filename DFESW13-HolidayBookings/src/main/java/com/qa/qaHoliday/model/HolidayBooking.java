@@ -8,19 +8,26 @@ public class HolidayBooking {
 	private float price;
 	private boolean allInclusive;
 	
-	// One constructor WITH id (retrieving data from the database)
-	public HolidayBooking(long id, String country, String weather, float price, boolean allInclusive) {
+	// When using Request bodies with Spring you need to include a default constructor
+	// Generate constructors from superclass() > generate
+	public HolidayBooking() {
 		super();
-		this.id = id;
+		// TODO Auto-generated constructor stub
+	}
+	
+	// One constructor WITHOUT ID (posting data into the database)
+	public HolidayBooking(String country, String weather, float price, boolean allInclusive) {
+		super();
 		this.country = country;
 		this.weather = weather;
 		this.price = price;
 		this.allInclusive = allInclusive;
 	}
 
-	// One constructor WITHOUT ID (posting data into the database)
-	public HolidayBooking(String country, String weather, float price, boolean allInclusive) {
+	// One constructor WITH id (retrieving data from the database)
+	public HolidayBooking(long id, String country, String weather, float price, boolean allInclusive) {
 		super();
+		this.id = id;
 		this.country = country;
 		this.weather = weather;
 		this.price = price;
