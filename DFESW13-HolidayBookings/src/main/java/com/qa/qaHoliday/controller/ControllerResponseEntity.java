@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,9 +46,26 @@ public class ControllerResponseEntity {
 		HolidayBooking result = bookingList.get(index);
 		
 		// Making a ResponseEntity that contains the data we're sending
-		ResponseEntity<HolidayBooking> response = new ResponseEntity<>(result, HttpStatus.ACCEPTED);
+		ResponseEntity<HolidayBooking> response = new ResponseEntity<>(result, HttpStatus.I_AM_A_TEAPOT);
 		
 		return response;
+	}
+	
+	@GetMapping("/getBookings")
+	public ResponseEntity<ArrayList<HolidayBooking>> getBookings() {
+		
+		// Either one of these returns will work in the same way
+		// ResponseEntity<ArrayList<HolidayBooking>> response = new ResponseEntity<>(bookingList, HttpStatus.ACCEPTED);
+		// return response;
+		
+		return new ResponseEntity<>(bookingList, HttpStatus.ACCEPTED);
+	}
+	
+	@DeleteMapping("/delete/{index}")
+	public ResponseEntity<String> deleteByIndex(@PathVariable("index") int index) {
+		bookingList.remove(index);
+		String response = "Booking of index: " + index + " deleted";
+		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
 	}
 
 }
