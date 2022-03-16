@@ -15,11 +15,11 @@ public class Services {
 	
 	private ArrayList<HolidayBooking> bookingList = new ArrayList<>();
 	
-	public boolean createBooking(HolidayBooking booking) {
-		
+	// Has the same functionality as the createBooking in the controller class 
+	public boolean createBooking(HolidayBooking booking) {	
 		booking.setId(bookingList.size() + 1);
 		bookingList.add(booking);
-		return true;
+		return true; // it returns a boolean, but this is not sent to the user
 	}
 
 	public HolidayBooking getByIndex(int index) {
@@ -32,6 +32,11 @@ public class Services {
 
 	public boolean remove(int index) {
 		bookingList.remove(index);
+		return true;
+	}
+
+	public boolean update(int index, HolidayBooking booking) {
+		bookingList.set(index, booking);
 		return true;
 	}
 
