@@ -40,4 +40,9 @@ public class Services {
 		return true;
 	}
 
+	public boolean deleteAll() {
+		bookingList.clear();
+		return true;
+	}
+
 }

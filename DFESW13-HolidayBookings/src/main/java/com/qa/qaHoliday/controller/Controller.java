@@ -2,6 +2,8 @@ package com.qa.qaHoliday.controller;
 
 import java.util.ArrayList;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,127 +13,94 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.qa.qaHoliday.model.HolidayBooking;
+import com.qa.qaHoliday.services.Services;
 
-// Telling Spring this class is a controller, meaning it takes in HTTP Requests
-//@RestController
+// If you have multiple classes with annotation @RestController, Spring will use the first one it finds
+
+@RestController
 public class Controller {
 	
-	// Because this is powered by Java 11, no need to add the data type to the 2nd pointy brackets
-	private ArrayList<HolidayBooking> bookingList = new ArrayList<>();
+	// Not using the arrayList in the controller anymore!!!
+//	private ArrayList<HolidayBooking> bookingList = new ArrayList<>(); 
 	
-	// this method listens for /getBookings
-	// Returns our arrayList 
-	@GetMapping("/getBookings")
-	public ArrayList<HolidayBooking> getBookings() {
-		System.out.println(bookingList);
-		return bookingList;
+	// Response Entities offer more info when sending a response back
+	// Response insludes a message AND a status code we can specify AND the data it requested
+	
+	// Sending a Delete Request, we respond with "Deleted ID of x" AND code 202 
+	// Sending a Get request, we respond with the Data requested AND a status code 200
+	
+	// Tell our Controller to use the Services Object
+	// When Spring creates our Controller, it passes in the Service object
+	
+	private Services service;
+	
+	public Controller(Services service) {
+		super();
+		this.service = service;
 	}
-	
-	// Create a method to post data 
-	// listens to port 8080 and /createBooking
-	@PostMapping("/createSetBooking")
-	public boolean createSetBooking() {
-		System.out.println("Will this print to the console???");
-		bookingList.add(new HolidayBooking("Wales", "rainy", 14f, true));
-		return true;
-	}
-	
-	// GET requests are the default
-	// When sending a HTTP request via browser unless you specify, its a GET request
-	
-	
-	// Creating a POST request that takes in information to add to the database
-	
-	// The HTTP Request will be supplied with data, in the form of a Request Body
-	// Our method takes in an object of type HolidayBooking, this will be a request body
+
 	@PostMapping("/createBooking")
-	public boolean createBooking(@RequestBody HolidayBooking booking) {
-		System.out.println(booking);
+	public ResponseEntity<String> createBooking(@RequestBody HolidayBooking booking) {
 		
-		// bookinglist.size = Length of the array
-		booking.setId(bookingList.size() + 1);
-		bookingList.add(booking);
-		return true;
+		// run the method in the Services class, passing in the object recieved via HTTP Request
+		service.createBooking(booking);
+		
+		// returns a response entity<data it contains>
+		ResponseEntity<String> response = new ResponseEntity<>("Booking added with ID: " + booking.getId(), HttpStatus.CREATED);
+		return response;
 	}
 	
-	// Get All 			x
-	// Post Data 		x
-	// Get by index		x
-	// Delete by index	x
-	// Delete all
-	// Update by index
-	
-	// Listens for a /get/<some number>
-	// /get/7 OR /get/145 - Path variable
 	@GetMapping("/get/{index}")
-	// Whatever the name of your path variable is, tell Spring to look for it
-	public HolidayBooking getByIndex(@PathVariable("index") int index) {
-		return bookingList.get(index);
+	public ResponseEntity<HolidayBooking> getByIndex(@PathVariable("index") int index) {
+		
+		// Making an object variable called result = the data we're retrieving
+		HolidayBooking result = service.getByIndex(index);
+		
+		// Making a ResponseEntity that contains the data we're sending
+		ResponseEntity<HolidayBooking> response = new ResponseEntity<>(result, HttpStatus.I_AM_A_TEAPOT);
+		
+		return response;
 	}
 	
-	// Listens for /delete/<some number> and deletes the object of that index
+	@GetMapping("/getBookings")
+	public ResponseEntity<ArrayList<HolidayBooking>> getBookings() {
+		
+		ArrayList<HolidayBooking> response = service.getBookings();
+		
+		// Either one of these returns will work in the same way
+		// ResponseEntity<ArrayList<HolidayBooking>> response = new ResponseEntity<>(bookingList, HttpStatus.ACCEPTED);
+		// return response;
+		
+		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+	}
+	
 	@DeleteMapping("/delete/{index}")
-	public boolean deleteByIndex(@PathVariable("index") int index) {
-		bookingList.remove(index);
-		return true;
+	public ResponseEntity<String> deleteByIndex(@PathVariable("index") int index) {
+		service.remove(index);
+		String response = "Booking of index: " + index + " deleted";
+		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
 	}
 	
-	// Listens for /deleteAll and clears all data from the arrayList
-	@DeleteMapping("/deleteAll")
-	public boolean deleteAll() {
-		bookingList.clear();
-		return true;
-	}
-	
-	// Update two paramaters, Id/index AND the data we're replacing with
-	// localhost:8080/update/2 AND we need to add a request body 
+	// Update via index
 	@PutMapping("/update/{index}")
-	public boolean update(@PathVariable("index") int index, @RequestBody HolidayBooking booking) {
-		 bookingList.set(index, booking);
-		 System.out.println("Object of index " + index + " updated.");
-		 return true;
-	}
-	
-	@PostMapping("/postArray")
-	public boolean addArrayBookings(@RequestBody HolidayBooking[] bookingArray) {
+	public ResponseEntity<String> updateByIndex(@PathVariable("index") int index, @RequestBody HolidayBooking booking) {
 		
-		for(HolidayBooking booking : bookingArray) {
-			bookingList.add(booking);
-		}
-		return true;
+		service.update(index, booking); // Telling the Service to do the method, but not doing anything with the return
+		
+		String response = "Updating booking of index: " + index;
+		return new ResponseEntity<>(response, HttpStatus.OK);
 		
 	}
 	
-	// Save the value of query and value as to seperate path variables
-	// update/country/wales - updates all bookings with country = wales to have a new value
-	@PutMapping("/updateByCountry/{value}")
-	public boolean updateAllObjects(@PathVariable("value") String value, @RequestBody HolidayBooking booking) {
+	// Delete all method within the controller 
+	@DeleteMapping("/delete") // <-- Handling the request coming in
+	public ResponseEntity<String> deleteAll() {
 		
-		int i = 0;
+		// bookingList.clear();  <-- Business logic, removing all data 
+		service.deleteAll();
 		
-		for(HolidayBooking bookingObj : bookingList) {
-			// if the value of getCountry() equal to the value we passed in..
-			if(bookingObj.getCountry() == value) {
-				System.out.println(i);
-				// if the bookingObj country == value
-				// set this index number to be the new values
-				bookingList.set(i, booking);
-				// Set this object to be equal to the new object passed in
-				// setCountry() whatever is passed in () is what you're setting the value to be
-				
-				// if bookingObj country == wales, set the price to be the new price
-				// set the weather to be the weather of the requestBody 
-//				bookingObj.setCountry(booking.getCountry());
-//				bookingObj.setAllInclusive(booking.isAllInclusive());
-//				bookingObj.setPrice(booking.getPrice());
-//				bookingObj.setWeather(booking.getWeather());
-			}
-			i++;
-		}
-		
-		return true;
-		
+		//                       <-- Handling the response to be sent back
+		return new ResponseEntity<>("all bookings deleted", HttpStatus.ACCEPTED);
 	}
-	
-	// 
+
 }
