@@ -1,6 +1,7 @@
 package com.qa.qaHoliday.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.qa.qaHoliday.model.HolidayBooking;
-import com.qa.qaHoliday.services.Services;
+import com.qa.qaHoliday.services.ServiceDB;
 
 // If you have multiple classes with annotation @RestController, Spring will use the first one it finds
 
@@ -24,16 +25,16 @@ public class Controller {
 //	private ArrayList<HolidayBooking> bookingList = new ArrayList<>(); 
 	
 	// Response Entities offer more info when sending a response back
-	// Response insludes a message AND a status code we can specify AND the data it requested
+	// Response includes a message AND a status code we can specify AND the data it requested
 	
 	// Sending a Delete Request, we respond with "Deleted ID of x" AND code 202 
 	// Sending a Get request, we respond with the Data requested AND a status code 200
 	
 	// Tell our Controller to use the Services Object
 	// When Spring creates our Controller, it passes in the Service object
-	private Services service;
+	private ServiceDB service;
 	
-	public Controller(Services service) {
+	public Controller(ServiceDB service) {
 		super();
 		this.service = service;
 	}
@@ -42,18 +43,18 @@ public class Controller {
 	public ResponseEntity<String> createBooking(@RequestBody HolidayBooking booking) {
 		
 		// run the method in the Services class, passing in the object recieved via HTTP Request
-		service.createBookingDB(booking);
+		service.createBooking(booking);
 		
 		// returns a response entity<data it contains>
 		ResponseEntity<String> response = new ResponseEntity<>("Booking added with ID: " + booking.getId(), HttpStatus.CREATED);
 		return response;
 	}
 	
-	@GetMapping("/get/{index}")
-	public ResponseEntity<HolidayBooking> getByIndex(@PathVariable("index") int index) {
+	@GetMapping("/get/{id}")
+	public ResponseEntity<HolidayBooking> getById(@PathVariable("id") long id) {
 		
 		// Making an object variable called result = the data we're retrieving
-		HolidayBooking result = service.getByIndex(index);
+		HolidayBooking result = service.getById(id);
 		
 		// Making a ResponseEntity that contains the data we're sending
 		ResponseEntity<HolidayBooking> response = new ResponseEntity<>(result, HttpStatus.I_AM_A_TEAPOT);
@@ -62,9 +63,9 @@ public class Controller {
 	}
 	
 	@GetMapping("/getBookings")
-	public ResponseEntity<ArrayList<HolidayBooking>> getBookings() {
+	public ResponseEntity<List<HolidayBooking>> getBookings() {
 		
-		ArrayList<HolidayBooking> response = service.getBookings();
+		List<HolidayBooking> response = service.getBookings();
 		
 		// Either one of these returns will work in the same way
 		// ResponseEntity<ArrayList<HolidayBooking>> response = new ResponseEntity<>(bookingList, HttpStatus.ACCEPTED);
@@ -73,20 +74,20 @@ public class Controller {
 		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
 	}
 	
-	@DeleteMapping("/delete/{index}")
-	public ResponseEntity<String> deleteByIndex(@PathVariable("index") int index) {
-		service.remove(index);
-		String response = "Booking of index: " + index + " deleted";
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<String> deleteByid(@PathVariable("id") long id) {
+		service.remove(id);
+		String response = "Booking of id: " + id + " deleted";
 		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
 	}
 	
-	// Update via index
-	@PutMapping("/update/{index}")
-	public ResponseEntity<String> updateByIndex(@PathVariable("index") int index, @RequestBody HolidayBooking booking) {
+	// Update via id
+	@PutMapping("/update/{id}")
+	public ResponseEntity<String> updateByid(@PathVariable("id") long id, @RequestBody HolidayBooking booking) {
 		
-		service.update(index, booking); // Telling the Service to do the method, but not doing anything with the return
+		service.update(id, booking); // Telling the Service to do the method, but not doing anything with the return
 		
-		String response = "Updating booking of index: " + index;
+		String response = "Updating booking of id: " + id;
 		return new ResponseEntity<>(response, HttpStatus.OK);
 		
 	}

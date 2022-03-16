@@ -10,7 +10,7 @@ import com.qa.qaHoliday.repo.Repo;
 // Annotation tells Spring this is our Services class
 // Services is the business Logic, pushing data to database / arrayList, updating deleting etc.
 
-@Service
+//@Service
 public class Services {
 	
 	// Specify that we want to use our repo class
