@@ -42,7 +42,7 @@ public class Controller {
 	public ResponseEntity<String> createBooking(@RequestBody HolidayBooking booking) {
 		
 		// run the method in the Services class, passing in the object recieved via HTTP Request
-		service.createBooking(booking);
+		service.createBookingDB(booking);
 		
 		// returns a response entity<data it contains>
 		ResponseEntity<String> response = new ResponseEntity<>("Booking added with ID: " + booking.getId(), HttpStatus.CREATED);

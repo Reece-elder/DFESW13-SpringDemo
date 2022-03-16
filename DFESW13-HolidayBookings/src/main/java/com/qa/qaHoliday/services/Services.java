@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.springframework.stereotype.Service;
 
 import com.qa.qaHoliday.model.HolidayBooking;
+import com.qa.qaHoliday.repo.Repo;
 
 // Annotation tells Spring this is our Services class
 // Services is the business Logic, pushing data to database / arrayList, updating deleting etc.
@@ -12,7 +13,22 @@ import com.qa.qaHoliday.model.HolidayBooking;
 @Service
 public class Services {
 	
+	// Specify that we want to use our repo class
 	
+	private Repo repo;
+	
+	// When spring creates the Service Object / bean, it takes in our repo class
+	public Services(Repo repo) {
+		super();
+		this.repo = repo;
+	}
+	
+	// Replaces the SQL query INSERT INTO Holiday_bookings (weather, country).. VALUE("spain")..
+	public boolean createBookingDB(HolidayBooking booking) {
+		repo.save(booking); // Takes in an entity, and puts in the DB 
+		return true;
+	}
+
 	private ArrayList<HolidayBooking> bookingList = new ArrayList<>();
 	
 	// Has the same functionality as the createBooking in the controller class 
