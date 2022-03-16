@@ -31,7 +31,6 @@ public class Controller {
 	
 	// Tell our Controller to use the Services Object
 	// When Spring creates our Controller, it passes in the Service object
-	
 	private Services service;
 	
 	public Controller(Services service) {
