@@ -1,26 +1,58 @@
 package com.qa.qaHoliday.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+// Put in the annotation @Entity so Spring knows this is an entity - import javax.persistence
+@Entity
 public class HolidayBooking {
 	
+	// Tell spring what property is our primary key
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // Telling Spring it will auto generate and auto increment??
 	private long id;
+	
+	// @Column tells Spring this will be a header for our table
+	// (unique = true, otherOptions=value)  
+	@Column(nullable = false, length = 30) // value cannot be null
 	private String country;
+	
+	@Column(nullable = false, length = 25)
 	private String weather;
+	
+	@Column(nullable = false)
 	private float price;
+	
+	@Column(nullable = false)
 	private boolean allInclusive;
 	
-	// One constructor WITH id (retrieving data from the database)
-	public HolidayBooking(long id, String country, String weather, float price, boolean allInclusive) {
+	// Will Create a MySQL table called HolidayBooking with these exact columns
+	// TO get all of the data from a database repo.getAll();
+	
+	
+	// When using Request bodies with Spring you need to include a default constructor
+	// Generate constructors from superclass() > generate
+	public HolidayBooking() {
 		super();
-		this.id = id;
+		// TODO Auto-generated constructor stub
+	}
+	
+	// One constructor WITHOUT ID (posting data into the database)
+	public HolidayBooking(String country, String weather, float price, boolean allInclusive) {
+		super();
 		this.country = country;
 		this.weather = weather;
 		this.price = price;
 		this.allInclusive = allInclusive;
 	}
 
-	// One constructor WITHOUT ID (posting data into the database)
-	public HolidayBooking(String country, String weather, float price, boolean allInclusive) {
+	// One constructor WITH id (retrieving data from the database)
+	public HolidayBooking(long id, String country, String weather, float price, boolean allInclusive) {
 		super();
+		this.id = id;
 		this.country = country;
 		this.weather = weather;
 		this.price = price;
