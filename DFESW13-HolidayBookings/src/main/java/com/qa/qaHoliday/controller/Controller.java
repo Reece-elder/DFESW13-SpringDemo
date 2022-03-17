@@ -131,5 +131,14 @@ public class Controller {
 		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
 		
 	}
+	
+	@GetMapping("/getAll/sortCountry")
+	public ResponseEntity<List<HolidayBooking>> getAllSortCountry() {
+		
+		List<HolidayBooking> response = service.getAllOrderByCountry();
+		
+		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+		
+	}
 
 }

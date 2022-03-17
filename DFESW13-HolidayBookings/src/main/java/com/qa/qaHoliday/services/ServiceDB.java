@@ -90,4 +90,8 @@ public class ServiceDB {
 	public List<HolidayBooking> getByAllInclusive(boolean bool){
 		return repo.findByAllInclusive(bool);
 	}
+	
+	public List<HolidayBooking> getAllOrderByCountry(){
+		return repo.OrderByCountryAsc();
+	}
 }

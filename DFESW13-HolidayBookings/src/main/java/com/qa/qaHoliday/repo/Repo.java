@@ -29,5 +29,11 @@ public interface Repo extends JpaRepository<HolidayBooking, Long> {
 	// SELECT * FROM holiday_booking WHERE all_inclusive = true
 	public List<HolidayBooking> findByAllInclusive(boolean bool);
 	
+	// Include a Sort by method 
+	// findBy + orderBy + column to order by + ascending / descending
 	public List<HolidayBooking> findByOrderByCountryAsc();
+	
+	// sorting by price descending
+	public List<HolidayBooking> findByOrderByPriceDesc();
+	
 }
