@@ -25,4 +25,6 @@ public interface Repo extends JpaRepository<HolidayBooking, Long> {
 	// If you call a method findBy<column header>  -> Returns a List of objects with that value
 
 	public List<HolidayBooking> findByPriceGreaterThan(float price);
+	
+	public List<HolidayBooking> findByAllInclusive(boolean bool);
 }

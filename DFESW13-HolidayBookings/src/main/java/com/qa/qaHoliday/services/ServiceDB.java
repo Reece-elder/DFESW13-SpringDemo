@@ -86,4 +86,8 @@ public class ServiceDB {
 	public List<HolidayBooking> getByPriceGreater(float price){
 		return repo.findByPriceGreaterThan(price);
 	}
+	
+	public List<HolidayBooking> getByAllInclusive(boolean bool){
+		return repo.findByAllInclusive(bool);
+	}
 }

@@ -122,5 +122,14 @@ public class Controller {
 		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
 		
 	}
+	
+	@GetMapping("/getAllIncl/{bool}")
+	public ResponseEntity<List<HolidayBooking>> getByAllInclusive(@PathVariable("bool") boolean bool) {
+		
+		List<HolidayBooking> response = service.getByAllInclusive(bool);
+		
+		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+		
+	}
 
 }
