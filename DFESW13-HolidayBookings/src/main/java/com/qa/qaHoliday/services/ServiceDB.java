@@ -92,6 +92,6 @@ public class ServiceDB {
 	}
 	
 	public List<HolidayBooking> getAllOrderByCountry(){
-		return repo.OrderByCountryAsc();
+		return repo.findByOrderByCountryAsc();
 	}
 }
