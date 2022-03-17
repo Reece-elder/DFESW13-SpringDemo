@@ -39,7 +39,7 @@ public class Controller {
 		this.service = service;
 	}
 
-	@PostMapping("/createBooking")
+	@PostMapping("/create")
 	public ResponseEntity<String> createBooking(@RequestBody HolidayBooking booking) {
 		
 		// run the method in the Services class, passing in the object recieved via HTTP Request
@@ -50,14 +50,14 @@ public class Controller {
 		return response;
 	}
 	
-	@GetMapping("/get/{id}")
+	@GetMapping("/getId/{id}")
 	public ResponseEntity<HolidayBooking> getById(@PathVariable("id") long id) {
 		
 		// Making an object variable called result = the data we're retrieving
 		HolidayBooking result = service.getById(id);
 		
 		// Making a ResponseEntity that contains the data we're sending
-		ResponseEntity<HolidayBooking> response = new ResponseEntity<>(result, HttpStatus.I_AM_A_TEAPOT);
+		ResponseEntity<HolidayBooking> response = new ResponseEntity<>(result, HttpStatus.ACCEPTED);
 		
 		return response;
 	}
@@ -101,6 +101,26 @@ public class Controller {
 		
 		//                       <-- Handling the response to be sent back
 		return new ResponseEntity<>("all bookings deleted", HttpStatus.ACCEPTED);
+	}
+	
+	// Method to get all bookings with a country value of x
+	@GetMapping("/getCountry/{country}")
+	public ResponseEntity<List<HolidayBooking>> getByCountry(@PathVariable("country") String country) {
+		
+		List<HolidayBooking> response = service.getByCountry(country);
+		
+		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+		
+	}
+	
+	// Method to get all bookings with a country value of x
+	@GetMapping("/getPrice/{price}")
+	public ResponseEntity<List<HolidayBooking>> getByPriceGreater(@PathVariable("price") float price) {
+		
+		List<HolidayBooking> response = service.getByPriceGreater(price);
+		
+		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+		
 	}
 
 }

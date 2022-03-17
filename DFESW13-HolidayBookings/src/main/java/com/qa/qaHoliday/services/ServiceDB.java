@@ -1,6 +1,5 @@
 package com.qa.qaHoliday.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -11,14 +10,17 @@ import com.qa.qaHoliday.repo.Repo;
 @Service
 public class ServiceDB {
 	
+	// Takes in Repo as an attribute
 	private Repo repo;
-
+	
+	// Constructor uses this repo to generate
 	public ServiceDB(Repo repo) {
 		super();
 		this.repo = repo;
 	}
 	
 	// Creates a new Record and puts it in the DB
+	// Making all records lowercase BEFORE adding to the db
 	public boolean createBooking(HolidayBooking booking) {
 		repo.save(booking); // Takes in an entity, and puts in the DB 
 		return true;
@@ -65,5 +67,23 @@ public class ServiceDB {
 		repo.save(updatedBooking);
 		
 		return true;
+	}
+	
+	// Query to return all objects with a country value of x 
+	public List<HolidayBooking> getByCountry(String country){
+		
+		
+		
+		// Get a list of all holiday bookings
+		// looping through all of the objects
+		// If holidayBooking.getCountry == country -> save it to a list
+		
+		// Use JpaRepository custom queries -> Repo file
+		return repo.findByCountry(country);
+		
+	}
+	
+	public List<HolidayBooking> getByPriceGreater(float price){
+		return repo.findByPriceGreaterThan(price);
 	}
 }

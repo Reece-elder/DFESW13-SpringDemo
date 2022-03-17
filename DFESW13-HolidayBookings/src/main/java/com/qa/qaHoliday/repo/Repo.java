@@ -1,5 +1,7 @@
 package com.qa.qaHoliday.repo;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.qa.qaHoliday.model.HolidayBooking;
@@ -14,5 +16,13 @@ public interface Repo extends JpaRepository<HolidayBooking, Long> {
 	// This class extends off JpaRepo which has *most* methods we need
 	
 	// Get Holiday filtered by country 
+	
+	// Abstract Method - Takes in no method body
+	// Takes in a String called country and it WILL return all bookings of that country
+	public List<HolidayBooking> findByCountry(String country);
+	
+	public List<HolidayBooking> findByWeather(String weather);
+	// If you call a method findBy<column header>  -> Returns a List of objects with that value
 
+	public List<HolidayBooking> findByPriceGreaterThan(float price);
 }
