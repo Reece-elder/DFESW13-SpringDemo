@@ -21,9 +21,9 @@ public class ServiceDB {
 	
 	// Creates a new Record and puts it in the DB
 	// Making all records lowercase BEFORE adding to the db
-	public boolean createBooking(HolidayBooking booking) {
-		repo.save(booking); // Takes in an entity, and puts in the DB 
-		return true;
+	public HolidayBooking createBooking(HolidayBooking booking) {
+		HolidayBooking savedObject = repo.save(booking); // Takes in an entity, and puts in the DB 
+		return savedObject;
 	}
 
 	// Returning a record by searching for its ID
